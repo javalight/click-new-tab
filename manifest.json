@@ -12,7 +12,6 @@
       "storage"
     ],
     "content_scripts": [{
-      "js": ["content.js"],
-      "matches": ["*://*/*"]
+      "js": ["content.js"]
     }]
   }

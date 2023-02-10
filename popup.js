@@ -1,5 +1,5 @@
-var defaultTags = "i"
-var defaultClasses = "buttons, Pagination"
+var defaultTags = ""
+var defaultClasses = "pagination, button, menu, control, icon"
 var defaultDomains = "discord.com"
 var defaultAttributes = ""
 
