@@ -29,9 +29,6 @@ chrome.storage.onChanged.addListener(loadStorage);
 loadStorage()
 
 document.addEventListener("click", function (event) {
-
-  console.log(excludeTags, excludeClasses, excludeDomains, excludeAttributes)
-
   let currentDomain = window.location.hostname.toLowerCase();
   if (excludeDomains.some(x => currentDomain.indexOf(x) !== -1))
     return
