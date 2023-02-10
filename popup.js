@@ -1,16 +1,6 @@
-var defaultTags = ""
-var defaultClasses = "pagination, button, menu, control, icon"
-var defaultDomains = "discord.com"
-var defaultAttributes = ""
-
 
 function getStorage() {
-    chrome.storage.sync.get({
-        excludeTags: defaultTags,
-        excludeClasses: defaultClasses,
-        excludeDomains: defaultDomains,
-        excludeAttributes: defaultAttributes
-    }, function (result) {
+    chrome.storage.sync.get(["excludeTags", "excludeClasses", "excludeDomains", "excludeAttributes"], function (result) {
         var { tags, classes, domains, attributes } = getElements()
         tags.value = result.excludeTags;
         classes.value = result.excludeClasses;
@@ -36,7 +26,6 @@ window.onload = function () {
 
     getStorage();
 }
-
 
 
 function getElements() {

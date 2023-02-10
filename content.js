@@ -6,12 +6,7 @@ let excludeAttributes;
 
 async function getStorage() {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get({
-      excludeTags: "",
-      excludeClasses: "",
-      excludeDomains: "",
-      excludeAttributes: ""
-    }, function (result) {
+    chrome.storage.sync.get(["excludeTags", "excludeClasses", "excludeDomains", "excludeAttributes"], function (result) {
       let excludeTags = result.excludeTags.split(",").map(tag => tag.trim());
       let excludeClasses = result.excludeClasses.split(",").map(tag => tag.trim());
       let excludeDomains = result.excludeDomains.split("\n").map(tag => tag.trim());
@@ -35,6 +30,8 @@ loadStorage()
 
 document.addEventListener("click", function (event) {
 
+  console.log(excludeTags, excludeClasses, excludeDomains, excludeAttributes)
+
   let currentDomain = window.location.hostname.toLowerCase();
   if (excludeDomains.some(x => currentDomain.indexOf(x) !== -1))
     return
@@ -42,6 +39,9 @@ document.addEventListener("click", function (event) {
   let elementsTocheck = [event.target, event.target.parentElement, event.target.parentElement.parentElement];
 
   for (let element of elementsTocheck) {
+    if (!element)
+      return;
+
     let currentTagName = element.tagName.toLowerCase();
     if (excludeTags.some(x => x == currentTagName))
       return;
