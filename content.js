@@ -23,6 +23,7 @@ async function loadStorage() {
   excludeClasses = storageData.excludeClasses;
   excludeDomains = storageData.excludeDomains;
   excludeAttributes = storageData.excludeAttributes;
+
 }
 
 chrome.storage.onChanged.addListener(loadStorage);
@@ -34,7 +35,7 @@ document.addEventListener("mousedown", function (event) {
     return
 
   let currentDomain = window.location.hostname.toLowerCase();
-  if (excludeDomains || excludeDomains.some(x => currentDomain.indexOf(x) !== -1))
+  if (excludeDomains && excludeDomains.some(x => currentDomain.indexOf(x) !== -1))
     return
 
   let elementsTocheck = [event.target, event.target.parentElement, event.target.parentElement.parentElement];
@@ -44,14 +45,14 @@ document.addEventListener("mousedown", function (event) {
       return;
 
     let currentTagName = element.tagName.toLowerCase();
-    if (excludeTags.some(x => x == currentTagName))
+    if (excludeTags && excludeTags.some(x => x == currentTagName))
       return;
 
     let currentClassList = [...element.classList, element.id].join(" ").toLowerCase();
-    if (excludeClasses.some(x => currentClassList.indexOf(x) !== -1))
+    if (excludeClasses && excludeClasses.some(x => currentClassList.indexOf(x) !== -1))
       return;
 
-    if (excludeAttributes.some(x => element.getAttribute(x)))
+    if (excludeAttributes && excludeAttributes.some(x => element.getAttribute(x)))
       return;
 
     let link = element.href;

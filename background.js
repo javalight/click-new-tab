@@ -13,10 +13,10 @@ function saveDefaults() {
     }, function (result) {
         let toSet = {};
 
-        if (!result.excludeTags) toSet.excludeTags = defaultTags;
-        if (!result.excludeClasses) toSet.excludeClasses = defaultClasses;
-        if (!result.excludeDomains) toSet.excludeDomains = defaultDomains;
-        if (!result.excludeAttributes) toSet.excludeAttributes = defaultAttributes;
+        if (result.excludeTags == null) toSet.excludeTags = defaultTags;
+        if (result.excludeClasses == null) toSet.excludeClasses = defaultClasses;
+        if (result.excludeDomains == null) toSet.excludeDomains = defaultDomains;
+        if (result.excludeAttributes == null) toSet.excludeAttributes = defaultAttributes;
 
         // set any updated setting
         if (Object.keys(toSet).length > 0) chrome.storage.sync.set(toSet);
