@@ -17,7 +17,7 @@ async function getStorage() {
   });
 }
 
-async function loadStorage(changes, namespace) {
+async function loadStorage() {
   let storageData = await getStorage();
   excludeTags = storageData.excludeTags;
   excludeClasses = storageData.excludeClasses;
@@ -28,9 +28,13 @@ async function loadStorage(changes, namespace) {
 chrome.storage.onChanged.addListener(loadStorage);
 loadStorage()
 
-document.addEventListener("click", function (event) {
+document.addEventListener("mousedown", function (event) {
+  //Check if mouse is left click
+  if (event.button !== 0)
+    return
+
   let currentDomain = window.location.hostname.toLowerCase();
-  if (excludeDomains.some(x => currentDomain.indexOf(x) !== -1))
+  if (excludeDomains || excludeDomains.some(x => currentDomain.indexOf(x) !== -1))
     return
 
   let elementsTocheck = [event.target, event.target.parentElement, event.target.parentElement.parentElement];

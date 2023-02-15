@@ -1,7 +1,7 @@
-var defaultTags = ""
+var defaultTags = "img"
 var defaultClasses = "pagination, button, menu, control, icon"
-var defaultDomains = "discord.com"
-var defaultAttributes = ""
+var defaultDomains = "discord.com\nnetflix.com"
+var defaultAttributes = "data-action"
 
 
 function saveDefaults() {
@@ -11,22 +11,15 @@ function saveDefaults() {
         excludeDomains: null,
         excludeAttributes: null
     }, function (result) {
-        if (!result.excludeTags)
-            chrome.storage.sync.set({
-                excludeTags: defaultTags,
-            });
-        if (!result.excludeClasses)
-            chrome.storage.sync.set({
-                excludeClasses: defaultClasses,
-            });
-        if (!result.excludeDomains)
-            chrome.storage.sync.set({
-                excludeDomains: defaultDomains,
-            });
-        if (!result.excludeAttributes)
-            chrome.storage.sync.set({
-                excludeAttributes: defaultAttributes,
-            });
+        let toSet = {};
+
+        if (!result.excludeTags) toSet.excludeTags = defaultTags;
+        if (!result.excludeClasses) toSet.excludeClasses = defaultClasses;
+        if (!result.excludeDomains) toSet.excludeDomains = defaultDomains;
+        if (!result.excludeAttributes) toSet.excludeAttributes = defaultAttributes;
+
+        // set any updated setting
+        if (Object.keys(toSet).length > 0) chrome.storage.sync.set(toSet);
     });
 }
 
