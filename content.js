@@ -38,7 +38,7 @@ document.addEventListener("mousedown", function (event) {
   if (excludeDomains && excludeDomains.some(x => currentDomain.indexOf(x) !== -1))
     return
 
-  let elementsTocheck = [event.target, event.target.parentElement, event.target.parentElement.parentElement];
+  let elementsTocheck = [event.target, event.target?.parentElement, event.target?.parentElement?.parentElement];
 
   for (let element of elementsTocheck) {
     if (!element)
