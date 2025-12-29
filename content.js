@@ -67,9 +67,35 @@ document.addEventListener("mousedown", function (event) {
       return
   }
 
-  let link = elementsTocheck.find(element => element.href);
-  if (link) {
+  let linkElement = elementsTocheck.find(element => element.href);
+  if (linkElement) {
+    let href = linkElement.getAttribute('href');
+    let fullHref = linkElement.href;
+
+    // Skip non-navigation hrefs
+    if (!href ||
+        href === '#' ||
+        href.startsWith('javascript:') ||
+        href.startsWith('#') && !href.includes('/')) {
+      return;
+    }
+
+    // Skip same-page anchor links
+    if (fullHref.split('#')[0] === window.location.href.split('#')[0] && href.includes('#')) {
+      return;
+    }
+
+    // Skip dropdown/menu triggers (common patterns)
+    if (linkElement.getAttribute('role') === 'button' ||
+        linkElement.getAttribute('role') === 'menuitem' ||
+        linkElement.hasAttribute('aria-haspopup') ||
+        linkElement.hasAttribute('aria-expanded') ||
+        linkElement.hasAttribute('data-toggle') ||
+        linkElement.hasAttribute('data-bs-toggle')) {
+      return;
+    }
+
     event.preventDefault();
-    window.open(link, "_blank");
+    window.open(fullHref, "_blank");
   }
 });
