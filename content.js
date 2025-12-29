@@ -23,13 +23,16 @@ async function loadStorage() {
   excludeClasses = storageData.excludeClasses;
   excludeDomains = storageData.excludeDomains;
   excludeAttributes = storageData.excludeAttributes;
-
 }
 
 chrome.storage.onChanged.addListener(loadStorage);
 loadStorage()
 
+
+
 document.addEventListener("mousedown", function (event) {
+  // event.preventDefault();
+
   //Check if mouse is left click
   if (event.button !== 0)
     return
@@ -38,7 +41,11 @@ document.addEventListener("mousedown", function (event) {
   if (excludeDomains && excludeDomains.some(x => currentDomain.indexOf(x) !== -1))
     return
 
-  let elementsTocheck = [event.target, event.target?.parentElement, event.target?.parentElement?.parentElement];
+  let elementsTocheck = [
+    event.target,
+    event.target?.parentElement,
+    event.target?.parentElement?.parentElement,
+  ];
 
   for (let element of elementsTocheck) {
     if (!element)
