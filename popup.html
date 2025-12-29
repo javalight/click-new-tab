@@ -1,50 +1,300 @@
 <html>
 
 <head>
-  <link rel="stylesheet" type="text/css" href="UI/semantic.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 320px;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f9fafb;
+      color: #222;
+    }
+
+    .popup-container {
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #222;
+      margin: 0 0 4px 0;
+    }
+
+    .header p {
+      font-size: 13px;
+      color: #666;
+      margin: 0;
+    }
+
+    .site-status {
+      padding: 20px;
+      border-radius: 16px;
+      text-align: center;
+      margin-bottom: 20px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .site-status.enabled {
+      background: #fff;
+      border: 2px solid #18d66a;
+      box-shadow: 0 4px 12px rgba(24, 214, 106, 0.15);
+    }
+
+    .site-status.disabled {
+      background: #fff;
+      border: 2px solid #ee3124;
+      box-shadow: 0 4px 12px rgba(238, 49, 36, 0.15);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .site-status.enabled .status-badge {
+      background: #18d66a;
+      color: #fff;
+    }
+
+    .site-status.disabled .status-badge {
+      background: #ee3124;
+      color: #fff;
+    }
+
+    #currentDomain {
+      font-size: 14px;
+      font-weight: 600;
+      color: #222;
+      word-break: break-all;
+      margin-bottom: 16px;
+    }
+
+    #toggleSiteBtn {
+      width: 100%;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      border: none;
+    }
+
+    #toggleSiteBtn:hover {
+      transform: scale(1.02);
+    }
+
+    #toggleSiteBtn:active {
+      transform: scale(0.98);
+    }
+
+    #toggleSiteBtn.red {
+      background: #222;
+      color: #fff;
+    }
+
+    #toggleSiteBtn.red:hover {
+      box-shadow: 0 4px 12px rgba(34, 34, 34, 0.3);
+    }
+
+    #toggleSiteBtn.green {
+      background: #18d66a;
+      color: #fff;
+    }
+
+    #toggleSiteBtn.green:hover {
+      box-shadow: 0 4px 12px rgba(24, 214, 106, 0.4);
+    }
+
+    .settings-section {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(34, 34, 34, 0.06);
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 16px;
+    }
+
+    .field-group {
+      margin-bottom: 16px;
+    }
+
+    .field-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .field-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #222;
+      margin-bottom: 8px;
+    }
+
+    .field-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #e8e8e8;
+      border-radius: 12px;
+      font-size: 13px;
+      font-family: inherit;
+      resize: vertical;
+      transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      background: #fff;
+      color: #222;
+    }
+
+    .field-group textarea:focus {
+      outline: none;
+      border-color: #ffdd00;
+      box-shadow: 0 0 0 4px rgba(255, 221, 0, 0.2);
+    }
+
+    .field-group textarea::placeholder {
+      color: #999;
+    }
+
+    .field-group textarea[rows="1"] {
+      min-height: 44px;
+    }
+
+    .field-group.domains textarea {
+      min-height: 100px;
+    }
+
+    .advanced-section {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(34, 34, 34, 0.06);
+      overflow: hidden;
+    }
+
+    .advanced-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+      user-select: none;
+    }
+
+    .advanced-header:hover {
+      background: #f9fafb;
+    }
+
+    .advanced-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #222;
+    }
+
+    .advanced-arrow {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease-in-out;
+      color: #666;
+    }
+
+    .advanced-arrow.open {
+      transform: rotate(180deg);
+    }
+
+    .advanced-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-in-out;
+    }
+
+    .advanced-content.open {
+      max-height: 500px;
+    }
+
+    .advanced-content-inner {
+      padding: 0 20px 20px 20px;
+      border-top: 1px solid #e8e8e8;
+    }
+
+    .advanced-content-inner .field-group:first-child {
+      padding-top: 16px;
+    }
+  </style>
 </head>
 
 <body>
-  <!-- <a id="apilink" href="https://beta.openai.com/account/api-keys">Get Api Key</a> -->
+  <div class="popup-container">
+    <div class="header">
+      <h1>Open Links In New Tab</h1>
+      <p>Click any link to open in a new tab</p>
+    </div>
 
-  <div class="ui center aligned basic segment">
-    <div class="ui form">
-      <div class="field">
-        <label>Exclude Tags</label>
-        <textarea id="excludeTags" rows="1"></textarea>
+    <div class="site-status enabled" id="siteStatus">
+      <div class="status-badge" id="statusBadge">Active</div>
+      <div id="currentDomain">-</div>
+      <button id="toggleSiteBtn" class="red">Disable for this site</button>
+    </div>
+
+    <div class="advanced-section">
+      <div class="advanced-header" id="advancedToggle">
+        <span class="advanced-title">Advanced Options</span>
+        <span class="advanced-arrow" id="advancedArrow">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
       </div>
-    </div>
-    <div class="ui horizontal divider">
-      -
-    </div>
-    <div class="ui form">
-      <div class="field">
-        <label>Exclude Classes</label>
-        <textarea id="excludeClasses" rows="1"></textarea>
-      </div>
-    </div>
-    <div class="ui horizontal divider">
-      -
-    </div>
-    <div class="ui form">
-      <div class="field">
-        <label>Exclude Attributes</label>
-        <textarea id="excludeAttributes" rows="1"></textarea>
-      </div>
-    </div>
-    <div class="ui horizontal divider">
-      -
-    </div>
-    <div class="ui form">
-      <div class="field">
-        <label>Exclude Domains</label>
-        <textarea id="excludeDomains" rows="15"></textarea>
+      <div class="advanced-content" id="advancedContent">
+        <div class="advanced-content-inner">
+          <div class="field-group">
+            <label>Tags</label>
+            <textarea id="excludeTags" rows="1" placeholder="img, button"></textarea>
+          </div>
+
+          <div class="field-group">
+            <label>Classes / IDs</label>
+            <textarea id="excludeClasses" rows="3" placeholder="dropdown, nav-menu"></textarea>
+          </div>
+
+          <div class="field-group">
+            <label>Attributes</label>
+            <textarea id="excludeAttributes" rows="1" placeholder="data-modal, data-action"></textarea>
+          </div>
+
+          <div class="field-group domains">
+            <label>Domains</label>
+            <textarea id="excludeDomains" placeholder="google.com&#10;github.com"></textarea>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
+  <script src="popup.js"></script>
 </body>
-
-<script src="popup.js"></script>
 
 </html>
